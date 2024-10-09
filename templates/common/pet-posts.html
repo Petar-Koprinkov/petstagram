@@ -77,7 +77,7 @@
                     </a>
                     {% endfor %}
                     {% if photo_page %}
-                        <p class="pet-details">This is my pet</p>
+                        <p class="pet-details">{{ photo.description }}</p>
                     {% else %}
                         <a href="{% url 'details-photo' photo.pk%}">
                             <h4 class="details">See details</h4>
