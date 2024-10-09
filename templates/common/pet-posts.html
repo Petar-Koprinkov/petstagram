@@ -23,6 +23,18 @@
                             {% if photo.location %}
                                 <span>{{ photo.location }}</span>
                             {% endif %}
+                            {% if photo_page %}
+                                <div class="edit-delete-btns">
+                                    <a href="{% url 'edit-photo' photo.pk %}">
+                                        <img class="edit-img" src="{% static '/images/edit-pen-icon-6.jpg' %}"
+                                             alt="edit button">
+                                    </a>
+                                    <a href="#">
+                                        <img class="bin-img" src="{% static '/images/icon-remove-22.jpg' %}"
+                                             alt="bin button">
+                                    </a>
+                                </div>
+                            {% endif %}
                         </h3>
                     </div>
                     <!--  -->
@@ -64,12 +76,44 @@
                         </p>
                     </a>
                     {% endfor %}
-
-                    <a href="{% url 'details-photo' photo.pk%}">
-                        <h4 class="details">See details</h4>
-                    </a>
+                    {% if photo_page %}
+                        <p class="pet-details">This is my pet</p>
+                    {% else %}
+                        <a href="{% url 'details-photo' photo.pk%}">
+                            <h4 class="details">See details</h4>
+                        </a>
+                    {% endif %}
 
                     <h5 class="postTime">{{ photo.date_of_publication }}</h5>
+                
+                    {% if photo_page %}
+                         <div class="comments">
+                            <div class="top">
+                                <div class="userDetails">
+                                    <div class="comment-data">
+                                        <div class="profilepic">
+                                            <div class="profile_img">
+                                                <div class="image">
+                                                    <!-- User Profile Image -->
+                                                    <img src="/static/images/person.png" alt="img8">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p>
+                                            <!-- Link to User Profile Details Page-->
+                                            <!-- User First and/or Last Name or username-->
+                                            <a href="">Steven Ivanov</a>
+                                            <!-- User Comment -->
+                                            - OMG where can i get one
+                                        </p>
+                                        </div>
+                                        <span>Sept. 20, 2022, 5:02 p.m.</span>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                    {% endif %}
+
 
                     <!-- add comments section -->
                     <div class="addComments">
