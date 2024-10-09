@@ -85,43 +85,38 @@
                     {% endif %}
 
                     <h5 class="postTime">{{ photo.date_of_publication }}</h5>
-
                     {% if photo_page %}
-                         <div class="comments">
-                            <div class="top">
-                                <div class="userDetails">
-                                    <div class="comment-data">
-                                        <div class="profilepic">
-                                            <div class="profile_img">
-                                                <div class="image">
-                                                    <!-- User Profile Image -->
-                                                    <img src="/static/images/person.png" alt="img8">
+                        {% for comment in comments %}
+                            <div class="comments">
+                                <div class="top">
+                                    <div class="userDetails">
+                                        <div class="comment-data">
+                                            <div class="profilepic">
+                                                <div class="profile_img">
+                                                    <div class="image">
+                                                        <img src="{% static 'images/person.png' %}" alt="img8">
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <p>
+                                                <a href="">Steven Ivanov</a>
+                                                {{ comment.text }}
+                                            </p>
                                         </div>
-                                        <p>
-                                            <!-- Link to User Profile Details Page-->
-                                            <!-- User First and/or Last Name or username-->
-                                            <a href="">Steven Ivanov</a>
-                                            <!-- User Comment -->
-                                            - OMG where can i get one
-                                        </p>
-                                        </div>
-                                        <span>Sept. 20, 2022, 5:02 p.m.</span>
+                                        <span>{{ comment.date_time_of_publication }}</span>
                                     </div>
                                 </div>
                             </div>
-                         </div>
+                        {% endfor %}
                     {% endif %}
 
 
                     <!-- add comments section -->
                     <div class="addComments">
 
-                        <form method="post" action="add comment">
-                            <label for="id_body">Body:</label>
-                            <textarea name="body" cols="40" rows="10" placeholder="Add comment..." maxlength="300"
-                                      required="" id="id_body"></textarea>
+                        <form method="POST" action="{% url 'comment' photo.id %}">
+                            {% csrf_token %}
+                            {{ comment_form.as_p }}
                             <button type="submit">Post</button>
                         </form>
                     </div>
