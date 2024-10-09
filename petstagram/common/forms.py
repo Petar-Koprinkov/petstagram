@@ -12,3 +12,11 @@ class CommentForm(forms.ModelForm):
             'text': forms.Textarea(attrs={'placeholder': 'Add comment...'}),
         }
 
+
+class SearchForm(forms.Form):
+    pet_name = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'Search by pet name...'}),
+        label='',
+        max_length=100,
+        required=False,
+    )
