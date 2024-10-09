@@ -32,4 +32,15 @@ class PetEditForm(PetBaseForm):
 
 
 class PetDeleteForm(PetBaseForm):
-    pass
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields:
+            self.fields[field].widget.attrs['disabled'] = 'disabled'
+            self.fields[field].widget.attrs['readonly'] = 'readonly'
+
+
+
+
+
+
