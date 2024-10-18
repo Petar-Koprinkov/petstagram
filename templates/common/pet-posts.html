@@ -113,7 +113,6 @@
 
                     <!-- add comments section -->
                     <div class="addComments">
-
                         <form method="POST" action="{% url 'comment' photo.id %}">
                             {% csrf_token %}
                             {{ comment_form.as_p }}
