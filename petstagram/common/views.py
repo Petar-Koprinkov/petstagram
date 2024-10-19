@@ -11,6 +11,7 @@ class IndexView(ListView):
     model = Photo
     template_name = 'common/home-page.html'
     context_object_name = 'all_photos'
+    paginate_by = 1
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -24,24 +25,6 @@ class IndexView(ListView):
         if query:
             queryset = queryset.filter(tagged_pets__name__icontains=query)
         return queryset
-
-
-
-# def index(request):
-#     all_photos = Photo.objects.all()
-#     comment_form = CommentForm()
-#     search_form = SearchForm(request.GET)
-#
-#     if search_form.is_valid():
-#         all_photos = all_photos.filter(tagged_pets__name__icontains=search_form.cleaned_data['pet_name'])
-#
-#     context = {
-#         'all_photos': all_photos,
-#         'comment_form': comment_form,
-#         'search_form': search_form,
-#     }
-#
-#     return render(request, 'common/home-page.html', context)
 
 
 def like_functionality(request, photo_id):
