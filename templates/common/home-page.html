@@ -1,4 +1,5 @@
 {% extends 'common/base.html' %}
+{% load url_append %}
 {% load static %}
 {% block content %}
     <div class="container">
@@ -20,20 +21,20 @@
                 <span class="step-links-buttons">
 
                     {% if page_obj.has_previous and page_obj.has_next %}
-                        <a href="?page={{ page_obj.previous_page_number }}">
+                        <a href="?{% url_append_tag request 'page' page_obj.previous_page_number %}">
                             <i class="fa-solid fa-arrow-left"></i>
                         </a>
-                        <a href="?page={{ page_obj.next_page_number }}">
+                        <a href="?{% url_append_tag request 'page' page_obj.next_page_number %}">
                             <i class="fa-solid fa-arrow-right"></i>
                         </a>
  
                     {% elif page_obj.has_previous %}
-                        <a href="?page={{ page_obj.previous_page_number }}">
+                        <a href="?{% url_append_tag request 'page'  page_obj.previous_page_number %}">
                             <i class="fa-solid fa-arrow-left"></i>
                         </a>
 
                     {% elif page_obj.has_next %}
-                        <a href="?page={{ page_obj.next_page_number }}">
+                        <a href="?{% url_append_tag request 'page' page_obj.next_page_number %}">
                             <i class="fa-solid fa-arrow-right"></i>
                         </a>
                     {% endif %}
