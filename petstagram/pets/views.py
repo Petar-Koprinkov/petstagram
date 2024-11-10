@@ -12,7 +12,7 @@ class AddPetView(CreateView):
     template_name = 'pets/pet-add-page.html'
 
     def get_success_url(self):
-        return reverse_lazy('profile-details', kwargs={'pk': 1})
+        return reverse_lazy('profile-details', kwargs={'pk': self.request.user.pk})
 
     def form_valid(self, form):
         pet = form.save(commit=False)

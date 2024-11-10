@@ -33,7 +33,7 @@
                         </a>
 
                         <!-- Link to Delete Profile Page -->
-                        <a href="">
+                        <a href="{% url 'profile-delete' profile.pk%}">
                             <img
                                     class="bin-img"
                                     src="{% static 'images/icon-remove-22.jpg' %}"
@@ -77,51 +77,48 @@
                 <!-- Start 1st Pet Details Page -->
                 <!-- Link to First Pet Details Page -->
                 {% for pet in profile.user.pets.all %}
-                <a href="{% url 'pet-details' pet.name pet.slug%}">
-                    <div class="head-pet">
-                        <div class="status">
-                            <div class="image">
-                                <!-- Pet Image -->
-                                <img
-                                        src="{{ pet.personal_photo }}"
-                                        alt="pet img"
-                                />
+                    <a href="{% url 'pet-details' pet.name pet.slug %}">
+                        <div class="head-pet">
+                            <div class="status">
+                                <div class="image">
+                                    <!-- Pet Image -->
+                                    <img
+                                            src="{{ pet.personal_photo }}"
+                                            alt="pet img"
+                                    />
+                                </div>
                             </div>
+                            <!-- Pet Name -->
+                            <p>{{ pet.name }}</p>
                         </div>
-                        <!-- Pet Name -->
-                        <p>{{ pet.name }}</p>
-                    </div>
-                </a>
+                    </a>
                 {% endfor %}
 
             </div>
         </div>
         <!-- End Pets Data Section -->
 
-        <!-- Start Last Uploaded Photos Section -->
-        <div class="pet-photos">
-            <!-- Link to Last Uploaded Pet Photo -->
-            {% for photo in profile.user.photos.all %}
-            <a href="{% url 'details-photo' photo.pk%}">
-                <!-- Pet Photo -->
-                <img
-                        src="{{ photo.photo.url }}"
-                        alt="pet img"
-                />
-            </a>
-            {% endfor %}
-            
-        </div>
-        <!-- End Last Uploaded Photos Section -->
+        {% if profile.user.photos.all %}
+            <div class="pet-photos">
+                <!-- Link to Last Uploaded Pet Photo -->
+                {% for photo in profile.user.photos.all %}
+                    <a href="{% url 'details-photo' photo.pk %}">
+                        <!-- Pet Photo -->
+                        <img
+                                src="{{ photo.photo.url }}"
+                                alt="pet img"
+                        />
+                    </a>
+                {% endfor %}
 
-        <!-- IF NO Posts Show No Post Image -->
+            </div>
 
-        <img
-                class="no-posts"
-                src="/static/images/no_posts.png"
-                alt="no posts"
-        />
-    </div>
-
-    <!-- End Profile Details Section -->
+        {% else %}
+            <img
+                    class="no-posts"
+                    src="{% static 'images/no_posts.png' %}"
+                    alt="no posts"
+            />
+            </div>
+        {% endif %}
 {% endblock %}
