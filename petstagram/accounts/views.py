@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model, login
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DetailView
 
 from petstagram.accounts.forms import AppUserCreationForm, ProfileEditForm
 from petstagram.accounts.models import Profile
@@ -26,8 +26,15 @@ class CustomLoginView(LoginView):
     template_name = 'accounts/login-page.html'
 
 
-def profile_details(request, pk):
-    return render(request, 'accounts/profile-details-page.html')
+class ProfileDetailsView(DetailView):
+    model = Profile
+    template_name = 'accounts/profile-details-page.html'
+    context_object_name = 'profile'
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     total_likes = (profile.like_set_count() for profile in self.object.photos.all())
+    #     context['total_likes'] = sum(total_likes)
 
 
 class ProfileEditView(UpdateView):
