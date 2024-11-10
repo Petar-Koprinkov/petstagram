@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.views import LoginView
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -15,8 +16,8 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('login')
 
 
-def login(request):
-    return render(request, 'accounts/login-page.html')
+class CustomLoginView(LoginView):
+    template_name = 'accounts/login-page.html'
 
 
 def profile_details(request, pk):

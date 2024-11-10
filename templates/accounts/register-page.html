@@ -12,8 +12,11 @@
                 {% csrf_token %}
                 
                 {{ form.email|placeholder:'Email' }}
+                {{ form.email.errors }}
                 {{ form.password1|placeholder:'Password' }}
+                {{ form.password1.errors }}
                 {{ form.password2|placeholder:'Confirm password' }}
+                {{ form.password2.errors }}
                 
                 <button type="submit">Register</button>
             </form>
