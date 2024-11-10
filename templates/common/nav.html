@@ -1,52 +1,57 @@
-    <nav class="navbar">
-        <div class="container">
-            <div class="logo">
-                <!-- Link to Home Page -->
-                <a href="{% url 'index' %}">
-                    <img width="50px" src="/static/images/free-30-instagram-stories-icons23_122570.png" alt="img1">
-                </a>
-
-                <!-- Link to Home Page -->
-                <a class="home" href="{% url 'index' %}">
-                    <i>Petstagram</i>
-                </a>
-            </div>
-
-            <div class="nav-links">
-                <ul class="nav-group">
+{% load static %}
+<nav class="navbar">
+    <div class="container">
+        <div class="logo">
+            <!-- Link to Home Page -->
+            <a href="{% url 'index' %}">
+                <img width="50px" src="{% static 'images/free-30-instagram-stories-icons23_122570.png' %}" alt="img1">
+            </a>
+            <a class="home" href="{% url 'index' %}">
+                <i>Petstagram</i>
+            </a>
+        </div>
+        <div class="nav-links">
+            <ul class="nav-group">
+                {% if not request.user.is_authenticated %}
                     <li class="nav-item">
 
-                        <!-- Link to Add Pet Page -->
-                        <a href="{% url 'pet-add' %}">
-                            <i>Add Pet</i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-
-                        <!-- Link to Add Photo Page -->
-                        <a href="{% url 'add-photo' %}">
-                            <i>Add Photo</i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-
-                        <!-- Link to Login Page -->
                         <a href="{% url 'login' %}">
                             <i>Login</i>
                         </a>
                     </li>
                     <li class="nav-item">
 
-                        <!-- Link to Register Page -->
+
                         <a href="{% url 'register' %}">
                             <i>Register</i>
                         </a>
                     </li>
+                {% else %}
+                    <li class="nav-item">
+
+                        <a href="{% url 'pet-add' %}">
+                            <i>Add Pet</i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+
+                        <a href="{% url 'add-photo' %}">
+                            <i>Add Photo</i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#">
+                            <i>Profile</i>
+                        </a>
+                    </li>
+
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
-                        <button class="button"><i>Logout</i></button>
+                        <button class="button" type="submit"><i>Logout</i></button>
                     </form>
-                </ul>
-            </div>
+                {% endif %}
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
