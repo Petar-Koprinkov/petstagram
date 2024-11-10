@@ -1,8 +1,18 @@
+from django.contrib.auth import get_user_model
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
+from petstagram.accounts.forms import AppUserCreationForm
+
+UserModel = get_user_model()
 
 
-def register(request):
-    return render(request, 'accounts/register-page.html')
+class RegisterView(CreateView):
+    model = UserModel
+    form_class = AppUserCreationForm
+    template_name = 'accounts/register-page.html'
+    success_url = reverse_lazy('login')
 
 
 def login(request):
