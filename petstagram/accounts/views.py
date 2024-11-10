@@ -6,6 +6,7 @@ from django.views.generic import CreateView, UpdateView, DetailView
 
 from petstagram.accounts.forms import AppUserCreationForm, ProfileEditForm
 from petstagram.accounts.models import Profile
+from petstagram.pets.models import Pet
 
 UserModel = get_user_model()
 
@@ -31,10 +32,19 @@ class ProfileDetailsView(DetailView):
     template_name = 'accounts/profile-details-page.html'
     context_object_name = 'profile'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     total_likes = (profile.like_set_count() for profile in self.object.photos.all())
-    #     context['total_likes'] = sum(total_likes)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        total_likes = (photos.like_set.count() for photos in self.object.user.photos.all())
+        context['total_likes'] = sum(total_likes)
+
+        total_pets = self.object.user.pets.all().count
+        context['total_pets'] = total_pets
+
+        total_photos = self.object.user.photos.all().count()
+        context['total_photos'] = total_photos
+
+
+        return context
 
 
 class ProfileEditView(UpdateView):
