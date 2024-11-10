@@ -42,6 +42,10 @@
                             <i>Register</i>
                         </a>
                     </li>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button class="button"><i>Logout</i></button>
+                    </form>
                 </ul>
             </div>
         </div>
