@@ -22,7 +22,7 @@
                     {% if photo.user.profile.first_name and not photo.user.profile.second_name %}
                         {{ photo.user.profile.full_name }}
                     {% else %}
-                        Anonymous
+                        Anonymous User
                     {% endif %}
                     <!-- else -->
                     <!-- user username -->
@@ -32,6 +32,7 @@
                     <span>{{ photo.location }}</span>
                 {% endif %}
                 {% if photo_page %}
+                {% if request.user.pk == photo.user.pk %}
                     <div class="edit-delete-btns">
                         <a href="{% url 'edit-photo' photo.pk %}">
                             <img class="edit-img" src="{% static '/images/edit-pen-icon-6.jpg' %}"
@@ -42,6 +43,7 @@
                                  alt="bin button">
                         </a>
                     </div>
+                    {% endif %}
                 {% endif %}
             </h3>
         </div>
@@ -57,15 +59,15 @@
         <!-- like and share buttons -->
         <div class="actionBtns">
             <div class="left">
-								<span class="heart">
-                                   <a href="{% url 'like' photo.pk %}">
-                                      {% if photo.like_set.all %}
-                                          <i class="fa-solid fa-heart" style="color: #ed4040;"></i>
-                                      {% else %}
-                                          <i class="fa-regular fa-heart"></i>
-                                      {% endif %}                   
-                                    </a>
-								</span>
+                <span class="heart">
+                    <a href="{% url 'like' photo.pk %}">
+                        {% if photo.like_set.all %}
+                            <i class="fa-solid fa-heart" style="color: #ed4040;"></i>
+                        {% else %}
+                            <i class="fa-regular fa-heart"></i>
+                        {% endif %}                   
+                    </a>
+                </span>
                 <a href="{% url 'share' photo.pk %}">
                     <i class="fa-solid fa-share"></i>
                 </a>
