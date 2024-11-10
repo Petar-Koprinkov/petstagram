@@ -19,7 +19,11 @@
             <div class="personal">
                 <div class="edit">
                     <!-- User Username -->
-                    <p>{{ profile.full_name }}</p>
+                    {% if profile.first_name and profile.last_name %}
+                        <p>{{ profile.full_name }}</p>
+                    {% else %}
+                        <p>Anonymous User</p>
+                    {% endif %}
 
                     <!-- IF the viewer is the owner of the profile -->
                     <!-- Link to Edit Profile Page -->
@@ -33,7 +37,7 @@
                         </a>
 
                         <!-- Link to Delete Profile Page -->
-                        <a href="{% url 'profile-delete' profile.pk%}">
+                        <a href="{% url 'profile-delete' profile.pk %}">
                             <img
                                     class="bin-img"
                                     src="{% static 'images/icon-remove-22.jpg' %}"
@@ -58,9 +62,12 @@
                 </div>
                 <!-- User First and Last Name IF Added -->
                 <h3 class="names">
-                    {% if profile.full_name %}
-                        {{ profile.full_name }}
+                    {% if profile.first_name and profile.last_name %}
+                        <p>{{ profile.full_name }}</p>
+                    {% else %}
+                        <p>Anonymous User</p>
                     {% endif %}
+
                 </h3>
 
                 <!-- User Email Address -->

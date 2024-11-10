@@ -10,7 +10,7 @@ urlpatterns = [
     path('profile/', include([
         path('<int:pk>/', views.ProfileDetailsView.as_view(), name='profile-details'),
         path('<int:pk>/edit/', views.ProfileEditView.as_view(), name='profile-edit'),
-        path('<int:pk>/delete/', views.profile_delete, name='profile-delete'),
+        path('<int:pk>/delete/', views.ProfileDeleteView.as_view(), name='profile-delete'),
     ])),
 ]
 
