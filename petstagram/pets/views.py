@@ -14,6 +14,12 @@ class AddPetView(CreateView):
     def get_success_url(self):
         return reverse_lazy('profile-details', kwargs={'pk': 1})
 
+    def form_valid(self, form):
+        pet = form.save(commit=False)
+        pet.user = self.request.user
+        pet.save()
+        return super().form_valid(form)
+
 
 class PetDetailView(DetailView):
     model = Pet

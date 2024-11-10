@@ -11,6 +11,12 @@ class AddPhotoView(CreateView):
     form_class = PhotoAddForm
     success_url = reverse_lazy('index')
 
+    def form_valid(self, form):
+        photo = form.save(commit=False)
+        photo.user = self.request.user
+        photo.save()
+        return super().form_valid(form)
+
 
 class PhotoDetailView(DetailView):
     model = Photo

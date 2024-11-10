@@ -35,7 +35,7 @@ def like_functionality(request, photo_id):
     if liked_photo:
         liked_photo.delete()
     else:
-        like = Like(to_photo_id=photo_id)
+        like = Like(to_photo_id=photo_id, user=request.user)
         like.save()
 
     return redirect(request.META.get('HTTP_REFERER') + f'#{photo_id}')
@@ -55,6 +55,7 @@ def comment_functionality(request, photo_id):
         if form.is_valid():
             comment = form.save(commit=False)
             comment.to_photo = photo
+            comment.user = request.user
             comment.save()
 
         return redirect(request.META['HTTP_REFERER'] + f'#{photo_id}')
