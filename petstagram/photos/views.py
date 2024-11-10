@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
@@ -18,7 +19,7 @@ class AddPhotoView(CreateView):
         return super().form_valid(form)
 
 
-class PhotoDetailView(DetailView):
+class PhotoDetailView(LoginRequiredMixin, DetailView):
     model = Photo
     template_name = 'photos/photo-details-page.html'
     context_object_name = 'photo'
@@ -30,7 +31,7 @@ class PhotoDetailView(DetailView):
         return context
 
 
-class PhotoEditView(UpdateView):
+class PhotoEditView(LoginRequiredMixin, UpdateView):
     model = Photo
     template_name = 'photos/photo-edit-page.html'
     form_class = PhotoEditForm

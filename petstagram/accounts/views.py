@@ -26,7 +26,7 @@ class CustomLoginView(LoginView):
     template_name = 'accounts/login-page.html'
 
 
-class ProfileDetailsView(DetailView):
+class ProfileDetailsView(LoginRequiredMixin, DetailView):
     model = Profile
     template_name = 'accounts/profile-details-page.html'
     context_object_name = 'profile'
@@ -45,7 +45,7 @@ class ProfileDetailsView(DetailView):
         return context
 
 
-class ProfileEditView(UpdateView):
+class ProfileEditView(LoginRequiredMixin, UpdateView):
     model = Profile
     form_class = ProfileEditForm
     template_name = 'accounts/profile-edit-page.html'
@@ -59,7 +59,7 @@ class ProfileEditView(UpdateView):
         )
 
 
-class ProfileDeleteView(DeleteView):
+class ProfileDeleteView(LoginRequiredMixin, DeleteView):
     model = Profile
     success_url = reverse_lazy('login')
     template_name = 'accounts/profile-delete-page.html'

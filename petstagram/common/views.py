@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, resolve_url
 from django.views.generic import ListView
 from pyperclip import copy
@@ -27,6 +28,7 @@ class IndexView(ListView):
         return queryset
 
 
+@login_required
 def like_functionality(request, photo_id):
     liked_photo = Like.objects.filter(
         to_photo_id=photo_id
@@ -46,7 +48,7 @@ def share_functionality(request, photo_id):
 
     return redirect(request.META['HTTP_REFERER'] + f'#{photo_id}')
 
-
+@login_required
 def comment_functionality(request, photo_id):
     photo = Photo.objects.get(id=photo_id)
     form = CommentForm(request.POST or None)
