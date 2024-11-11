@@ -31,6 +31,13 @@ class PetDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         context['pet_photos'] = self.object.pet_photos.all()
+
+        all_photos = context['pet'].pet_photos.all()
+        for photo in all_photos:
+            photo.has_liked = photo.like_set.filter(user=self.request.user).exists()
+
+        context['all_photos'] = all_photos
+
         return context
 
 
