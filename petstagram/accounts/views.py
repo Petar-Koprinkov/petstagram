@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model, login
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView
-from django.shortcuts import render, redirect
+from django.http import HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DetailView, DeleteView
 from petstagram.accounts.forms import AppUserCreationForm, ProfileEditForm
@@ -45,7 +46,7 @@ class ProfileDetailsView(LoginRequiredMixin, DetailView):
         return context
 
 
-class ProfileEditView(LoginRequiredMixin, UpdateView):
+class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Profile
     form_class = ProfileEditForm
     template_name = 'accounts/profile-edit-page.html'
@@ -58,8 +59,12 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
             }
         )
 
+    def test_func(self):
+        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        return self.request.user == profile.user
 
-class ProfileDeleteView(LoginRequiredMixin, DeleteView):
+
+class ProfileDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Profile
     success_url = reverse_lazy('login')
     template_name = 'accounts/profile-delete-page.html'
@@ -71,3 +76,8 @@ class ProfileDeleteView(LoginRequiredMixin, DeleteView):
         user = self.get_object()
         user.delete()
         return redirect(self.get_success_url())
+
+
+    def test_func(self):
+        profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
+        return self.request.user == profile.user

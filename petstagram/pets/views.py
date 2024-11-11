@@ -1,5 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
 from petstagram.common.forms import CommentForm
@@ -34,7 +34,7 @@ class PetDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class EditPetView(LoginRequiredMixin, UpdateView):
+class EditPetView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Pet
     form_class = PetEditForm
     template_name = 'pets/pet-edit-page.html'
@@ -42,12 +42,21 @@ class EditPetView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('pet-details', kwargs={'username': self.kwargs['username'], 'slug': self.kwargs['slug']})
 
+    def test_func(self):
+        pet = get_object_or_404(Pet, slug=self.kwargs['slug'])
+        if self.request.user != pet.user:
+            return self.request.user == pet.user
 
-class DeletePetView(LoginRequiredMixin, DeleteView):
+
+class DeletePetView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Pet
     template_name = 'pets/pet-delete-page.html'
     form_class = PetDeleteForm
-    success_url = reverse_lazy('profile-details', kwargs={'pk': 1})
+
+    def get_success_url(self):
+        return reverse_lazy(
+            'profile-details', kwargs={'pk': self.request.user.pk}
+        )
 
     def get_initial(self):
         pet = self.get_object()
@@ -59,3 +68,8 @@ class DeletePetView(LoginRequiredMixin, DeleteView):
         }
 
         return kwargs
+
+    def test_func(self):
+        pet = get_object_or_404(Pet, slug=self.kwargs['slug'])
+        if self.request.user != pet.user:
+            return self.request.user == pet.user

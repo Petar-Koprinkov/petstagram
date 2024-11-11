@@ -1,5 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import HttpResponseForbidden
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
 from petstagram.photos.forms import PhotoAddForm, PhotoEditForm
@@ -32,15 +34,23 @@ class PhotoDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class PhotoEditView(LoginRequiredMixin, UpdateView):
+class PhotoEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Photo
     template_name = 'photos/photo-edit-page.html'
     form_class = PhotoEditForm
     success_url = reverse_lazy('index')
     context_object_name = 'photo'
 
+    def test_func(self):
+        photo = get_object_or_404(Photo, pk=self.kwargs['pk'])
+        return self.request.user == photo.user
 
+@login_required
 def photo_delete(request, pk):
     photo = Photo.objects.get(pk=pk)
+
+    if photo.user != request.user:
+        return HttpResponseForbidden()
+
     photo.delete()
     return redirect('index')
