@@ -28,6 +28,7 @@ class PhotoDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['comments'] = self.object.comment_set.all()
         context['likes'] = self.object.like_set.all()
+        self.object.has_liked = self.object.like_set.filter(user=self.request.user).exists()
         return context
 
 

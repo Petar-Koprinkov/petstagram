@@ -18,6 +18,9 @@ class IndexView(ListView):
         context = super().get_context_data(**kwargs)
         context['comment_form'] = CommentForm()
         context['search_form'] = SearchForm(self.request.GET)
+        for photo in context['all_photos']:
+            user = self.request.user
+            photo.has_liked = photo.like_set.filter(user=user).exists() if user.is_authenticated else False
         return context
 
     def get_queryset(self):
@@ -31,7 +34,8 @@ class IndexView(ListView):
 @login_required
 def like_functionality(request, photo_id):
     liked_photo = Like.objects.filter(
-        to_photo_id=photo_id
+        to_photo_id=photo_id,
+        user=request.user,
     )
 
     if liked_photo:
