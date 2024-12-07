@@ -8,9 +8,7 @@
             <h1>Petstagram</h1>
             
             <form method="post">
-                
                 {% csrf_token %}
-                
                 {{ form.email|placeholder:'Email' }}
                 {{ form.email.errors }}
                 {{ form.password1|placeholder:'Password' }}
